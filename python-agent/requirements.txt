@@ -1,0 +1,17 @@
+# --- Transport / API layer (Steps 1-2) ---
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30,<1.0
+pydantic>=2.9,<3.0
+websockets>=13.0
+python-dotenv>=1.0
+
+# --- Geophysical / math compute ---
+numpy>=1.26
+scipy>=1.11
+empymod>=2.3
+
+# --- Borehole lithology classification (LITHOLOGY method) ---
+scikit-learn>=1.4
+
+# --- Agent layer (LLM provider: Google Gemini) ---
+google-genai>=1.0

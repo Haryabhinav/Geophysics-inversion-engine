@@ -1,0 +1,19 @@
+# Nested globs matter here: `dashboard/` is COPYd wholesale by the dashboard
+# build stage, and a host node_modules (with host-platform native binaries)
+# copied into a linux image is both slow and wrong.
+node_modules
+**/node_modules
+dist
+tests
+*.log
+.env
+**/.env
+**/.env*.local
+Dockerfile
+.dockerignore
+.next
+**/.next
+out
+**/out
+**/*.tsbuildinfo
+legacy

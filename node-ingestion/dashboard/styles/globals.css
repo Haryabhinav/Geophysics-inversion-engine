@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --page-bg: #f7f8fa;
+  --card-bg: #ffffff;
+  --text-primary: #14141a;
+  --text-secondary: #56565f;
+  --text-muted: #8b8b94;
+  --border-hairline: #e2e2e8;
+
+  /* Brand accent. Mirrors tailwind.config.ts's brand.500 (light) / brand.400
+     (dark) — the same pair lib/theme/antd-theme.ts feeds AntD's colorPrimary,
+     so a hand-styled accent and an AntD primary button can never drift apart.
+     Declared as a variable rather than inlined per-component so the accent is
+     theme-aware: brand.500 is too dark to read against the dark surface. */
+  --brand: #3563e9;
+
+  /* dataviz skill's validated categorical palette — fixed order, never cycled */
+  --viz-series1: #2a78d6;
+  --viz-series2: #eb6834;
+  --viz-series3: #1baf7a;
+  --viz-series4: #eda100;
+  --viz-series5: #e87ba4;
+  --viz-series6: #008300;
+  --viz-series7: #4a3aa7;
+  --viz-series8: #e34948;
+
+  --viz-surface: #fcfcfb;
+  --viz-grid: #e1e0d9;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --page-bg: #0c0c0f;
+  --card-bg: #1c1c21;
+  --text-primary: #ffffff;
+  --text-secondary: #c7c7ce;
+  --text-muted: #8b8b94;
+  --border-hairline: #2e2e36;
+
+  --brand: #5c87fa;
+
+  --viz-series1: #3987e5;
+  --viz-series2: #d95926;
+  --viz-series3: #199e70;
+  --viz-series4: #c98500;
+  --viz-series5: #d55181;
+  --viz-series6: #008300;
+  --viz-series7: #9085e9;
+  --viz-series8: #e66767;
+
+  --viz-surface: #1a1a19;
+  --viz-grid: #2c2c2a;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--text-primary);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(53, 99, 233, 0.25);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Site Report markdown rendering (components/site/SiteReportPanel.tsx) —
+   antd resets most heading/list margins globally, so the report body needs
+   its own minimal typography rather than inheriting antd's defaults. */
+.markdown-body h2 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 20px 0 8px;
+}
+.markdown-body h2:first-child {
+  margin-top: 0;
+}
+.markdown-body p {
+  margin: 0 0 10px;
+  line-height: 1.6;
+}
+.markdown-body ul,
+.markdown-body ol {
+  margin: 0 0 10px;
+  padding-left: 20px;
+}
+
+/* "Print / Export PDF" (SiteReportPanel) — isolate the report body so the
+   sidebar, nav, and rest of the page don't end up in the printed output. */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #site-report-print-area,
+  #site-report-print-area * {
+    visibility: visible;
+  }
+  #site-report-print-area {
+    position: absolute;
+    inset: 0;
+  }
+}

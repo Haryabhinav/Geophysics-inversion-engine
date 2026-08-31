@@ -1,0 +1,34 @@
+{
+  "name": "@afie/node-ingestion",
+  "version": "0.1.0",
+  "private": true,
+  "description": "High-throughput ingestion + sanitization layer that streams field data to the FastAPI agent backend.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "npm run build:server && npm run build:dashboard",
+    "build:server": "tsc -p tsconfig.json",
+    "build:dashboard": "cd dashboard && npm install && npm run build && node ../scripts/copy-dashboard-build.mjs",
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts",
+    "dev:dashboard": "npm run dev --prefix dashboard",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@fastify/static": "^8.0.3",
+    "fastify": "^5.1.0",
+    "pg": "^8.13.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/pg": "^8.11.10",
+    "@types/ws": "^8.5.12",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.8"
+  }
+}
