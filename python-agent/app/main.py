@@ -229,7 +229,26 @@ async def inversion_stream(websocket: WebSocket) -> None:
     logger.info("Node.js ingestion client connected")
     try:
         while True:
-            raw = await websocket.receive_text()
+            # Mirrors _safe_send_json's tolerance on the send side: if this
+            # connection died between the last send and this receive (e.g.
+            # Node reconnected on a NEW connection right after this one's
+            # ping timed out), Starlette raises a bare RuntimeError here
+            # rather than WebSocketDisconnect — unlike a normal disconnect,
+            # this one is NOT caught by the `except WebSocketDisconnect`
+            # below, so it propagated uncaught and killed this handler
+            # coroutine (observed live: harmless in isolation, since the
+            # connection was already dead, but it meant any job accepted
+            # by Node between the old connection's last successful receive
+            # and its actual death was silently stranded — sent nowhere,
+            # never retried, with no error surfaced to the client that
+            # accepted it as 202). Treating it the same as a clean
+            # disconnect here closes that gap: the handler exits promptly
+            # instead of leaving a zombie coroutine that looks alive.
+            try:
+                raw = await websocket.receive_text()
+            except RuntimeError as exc:
+                logger.info("Node.js ingestion client disconnected (%r)", exc)
+                return
 
             try:
                 peek = json.loads(raw)
